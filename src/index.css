@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  .animate-slideInRight {
+    animation: slideInRight 0.3s ease-out forwards;
+  }
+
+  .animate-pulse-dot {
+    animation: pulseDot 2s ease-in-out infinite;
+  }
+
+  .animate-glow-orange {
+    animation: glowOrange 2s ease-in-out infinite alternate;
+  }
+
+  .animate-glow-cyan {
+    animation: glowCyan 2s ease-in-out infinite alternate;
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md;
+  }
+
+  .admin-card {
+    @apply bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl;
+  }
+
+  .admin-input {
+    @apply bg-[#242424] border border-[#2a2a2a] rounded-lg px-3 py-2 text-[#f1f5f9] placeholder-[#64748b] focus:border-[#ff6b35] focus:ring-1 focus:ring-[#ff6b35] outline-none transition-colors duration-200;
+  }
+
+  .admin-btn-primary {
+    @apply bg-[#ff6b35] hover:bg-[#e55a2b] text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+
+  .admin-btn-secondary {
+    @apply border border-[#00d4ff] text-[#00d4ff] hover:bg-[#00d4ff]/10 px-4 py-2 rounded-lg font-medium transition-all duration-200;
+  }
+
+  .admin-btn-ghost {
+    @apply text-[#94a3b8] hover:text-[#f1f5f9] hover:bg-[#242424] px-3 py-2 rounded-lg transition-colors duration-200;
+  }
+
+  .severity-critical {
+    @apply bg-red-500/10 text-red-400 border border-red-500/20;
+  }
+
+  .severity-high {
+    @apply bg-orange-500/10 text-orange-400 border border-orange-500/20;
+  }
+
+  .severity-medium {
+    @apply bg-yellow-500/10 text-yellow-400 border border-yellow-500/20;
+  }
+
+  .severity-low {
+    @apply bg-blue-500/10 text-blue-400 border border-blue-500/20;
+  }
+
+  .severity-info {
+    @apply bg-slate-500/10 text-slate-400 border border-slate-500/20;
+  }
+
+  .status-active {
+    @apply text-emerald-400;
+  }
+
+  .status-inactive {
+    @apply text-slate-500;
+  }
+
+  .status-error {
+    @apply text-red-400;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+@keyframes glowOrange {
+  from { box-shadow: 0 0 8px rgba(255, 107, 53, 0.2); }
+  to { box-shadow: 0 0 16px rgba(255, 107, 53, 0.4); }
+}
+
+@keyframes glowCyan {
+  from { box-shadow: 0 0 8px rgba(0, 212, 255, 0.2); }
+  to { box-shadow: 0 0 16px rgba(0, 212, 255, 0.4); }
+}
+
+.dark-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dark-scrollbar::-webkit-scrollbar-track {
+  background: #0d0d0d;
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 3px;
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+.code-keyword { color: #3B82F6; }
+.code-string { color: #D97706; }
+.code-comment { color: #10B981; }
+.code-function { color: #A78BFA; }
+.code-number { color: #F59E0B; }
