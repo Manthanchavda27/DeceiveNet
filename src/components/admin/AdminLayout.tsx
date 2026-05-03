@@ -77,7 +77,7 @@ export function AdminLayout() {
   const sidebarWidth = collapsed ? 64 : 260;
 
   return (
-    <div className="min-h-screen bg-[#0d0d0d] text-[#f1f5f9]">
+    <div className="min-h-screen bg-[#0d0d0d] text-white">
       {/* ========== SIDEBAR (desktop + tablet) ========== */}
       <aside
         className="hidden md:flex flex-col fixed top-0 left-0 h-screen bg-[#0d0d0d] border-r border-[#2a2a2a] z-30 transition-all duration-300"
