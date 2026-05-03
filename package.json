@@ -1,8 +1,13 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "deceivenet",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "DeceiveNet — self-hosted honeypot platform: decoy services, attacker TTPs, and threat intelligence.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Manthanchavda27/DeceiveNet.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
