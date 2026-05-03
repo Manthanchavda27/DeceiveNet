@@ -130,7 +130,7 @@ export default function ProjectDetailPage() {
       <div>
         <Link
           to="/dashboard"
-          className="text-sm text-[#0891B2] hover:text-teal-700 inline-flex items-center gap-1"
+          className="text-sm text-accent hover:text-[#00b8d9] inline-flex items-center gap-1"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Projects
@@ -152,7 +152,7 @@ export default function ProjectDetailPage() {
             onClick={() => setActiveTab(tab.key)}
             className={
               activeTab === tab.key
-                ? 'bg-white text-teal-600 rounded-lg shadow-sm px-4 py-2 font-medium'
+                ? 'bg-white text-brand rounded-lg shadow-sm px-4 py-2 font-medium'
                 : 'text-[#64748B] hover:text-[#0F172A] px-4 py-2 rounded-lg cursor-pointer'
             }
           >
@@ -172,7 +172,7 @@ export default function ProjectDetailPage() {
                 onClick={() => setActiveFile(name)}
                 className={
                   activeFile === name
-                    ? 'bg-teal-50 text-teal-700 border border-teal-200 rounded-lg px-3 py-1 text-sm'
+                    ? 'bg-brand-soft text-brand-foreground border border-brand-border rounded-lg px-3 py-1 text-sm'
                     : 'text-[#64748B] hover:bg-[#F8FAFC] rounded-lg px-3 py-1 text-sm cursor-pointer'
                 }
               >
@@ -211,7 +211,7 @@ export default function ProjectDetailPage() {
               <div
                 className={
                   msg.sender === 'user'
-                    ? 'bg-teal-50 text-[#0F172A] rounded-2xl rounded-bl-sm p-4 max-w-[80%] ml-auto'
+                    ? 'bg-brand-soft text-[#0F172A] rounded-2xl rounded-bl-sm p-4 max-w-[80%] ml-auto'
                     : 'bg-[#F1F5F9] text-[#0F172A] rounded-2xl rounded-br-sm p-4 max-w-[80%]'
                 }
               >
@@ -246,7 +246,7 @@ export default function ProjectDetailPage() {
                   <td className="px-4 py-3 flex gap-2">
                     <button
                       onClick={() => toggleEnvVisibility(i)}
-                      className="text-sm text-[#0891B2] hover:text-teal-700"
+                      className="text-sm text-accent hover:text-[#00b8d9]"
                     >
                       {envVisibility[i] ? 'Hide' : 'Show'}
                     </button>

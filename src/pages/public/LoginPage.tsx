@@ -16,19 +16,18 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Left side - Login form */}
       <div className="flex w-full items-center justify-center bg-white px-4 py-12 lg:w-1/2">
         <div className="w-full max-w-md rounded-2xl border border-[#E2E8F0] bg-white p-8 shadow-sm">
-          {/* Logo */}
-          <p className="text-xl font-bold text-teal-600">VibeForge</p>
+          <p className="text-xl font-bold text-brand">DeceiveNet</p>
+          <p className="mt-1 text-sm text-[#64748b]">
+            Catch Every Intruder
+          </p>
 
-          {/* Heading */}
           <h1 className="mt-6 text-2xl font-bold text-[#0F172A]">
             Welcome back
           </h1>
           <p className="mt-1 text-[#475569]">Sign in to your account</p>
 
-          {/* Email input */}
           <div className="mt-6">
             <label
               htmlFor="email"
@@ -39,14 +38,13 @@ export default function LoginPage() {
             <input
               id="email"
               type="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full rounded-xl border border-[#E2E8F0] px-4 py-3 outline-none transition-colors focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+              className="w-full rounded-xl border border-[#E2E8F0] px-4 py-3 outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand"
             />
           </div>
 
-          {/* Password input */}
           <div className="mt-4">
             <label
               htmlFor="password"
@@ -58,56 +56,53 @@ export default function LoginPage() {
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="w-full rounded-xl border border-[#E2E8F0] px-4 py-3 pr-11 outline-none transition-colors focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+                className="w-full rounded-xl border border-[#E2E8F0] px-4 py-3 pr-11 outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand"
               />
               <button
                 type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#475569]"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] transition-colors hover:text-[#475569]"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
           </div>
 
-          {/* Remember me & Forgot password */}
           <div className="mt-4 flex items-center justify-between">
-            <label className="flex cursor-pointer items-center gap-2">
+            <label className="flex items-center gap-2 text-sm text-[#475569] cursor-pointer">
               <input
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="h-4 w-4 rounded border-[#E2E8F0] accent-teal-600"
+                className="h-4 w-4 rounded border-[#E2E8F0] accent-brand"
               />
-              <span className="text-sm text-[#475569]">Remember me</span>
+              Remember me
             </label>
             <a
               href="#"
-              className="text-sm font-medium text-teal-600 hover:text-teal-700"
+              className="text-sm font-medium text-brand hover:text-brand-hover"
             >
               Forgot password?
             </a>
           </div>
 
-          {/* Sign In button */}
           <button
             onClick={handleSignIn}
-            className="mt-6 w-full rounded-xl bg-teal-600 py-3 font-medium text-white transition-colors hover:bg-teal-700"
+            className="mt-6 w-full rounded-xl bg-brand py-3 font-medium text-white transition-colors hover:bg-brand-hover"
           >
             Sign In
           </button>
 
-          {/* Divider */}
           <div className="mt-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-[#E2E8F0]" />
             <span className="text-sm text-[#94A3B8]">or continue with</span>
             <div className="h-px flex-1 bg-[#E2E8F0]" />
           </div>
 
-          {/* Social buttons */}
           <div className="mt-6 flex gap-3">
             <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[#E2E8F0] px-4 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:bg-[#F8FAFC]">
               <Chrome size={18} />
@@ -123,32 +118,29 @@ export default function LoginPage() {
             </button>
           </div>
 
-          {/* Sign up link */}
           <p className="mt-6 text-center text-sm text-[#475569]">
             Don&apos;t have an account?{" "}
-            <a
-              href="#"
-              className="font-medium text-teal-600 hover:text-teal-700"
-            >
+            <a href="#" className="font-medium text-brand hover:text-brand-hover">
               Sign up
             </a>
           </p>
         </div>
       </div>
 
-      {/* Right side - Decorative brand panel */}
-      <div className="hidden min-h-screen w-1/2 items-center justify-center bg-gradient-to-br from-teal-400 to-cyan-600 lg:flex">
-        <div className="text-center">
-          <p className="text-lg text-white/90">
-            The AI deployment platform trusted by
+      <div className="hidden min-h-screen w-1/2 items-center justify-center bg-gradient-to-br from-brand to-accent lg:flex">
+        <div className="text-center px-8">
+          <p className="text-lg text-white/95 font-medium">DeceiveNet Honeypot</p>
+          <p className="mt-2 text-white/85 text-sm max-w-sm mx-auto">
+            Enterprise deception & threat intelligence — decoys that watch your
+            perimeter while you sleep.
           </p>
-          <div className="mt-4 flex items-center justify-center gap-6">
-            <span className="font-semibold text-white/70">Nvidia</span>
-            <span className="font-semibold text-white/70">Spotify</span>
-            <span className="font-semibold text-white/70">Microsoft</span>
+          <div className="mt-6 flex items-center justify-center gap-6">
+            <span className="font-semibold text-white/75">Nvidia</span>
+            <span className="font-semibold text-white/75">Spotify</span>
+            <span className="font-semibold text-white/75">Microsoft</span>
           </div>
           <p className="mt-8 text-3xl font-bold text-white">
-            1M+ agents deployed
+            10K+ sessions captured
           </p>
         </div>
       </div>

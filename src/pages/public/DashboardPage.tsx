@@ -21,11 +21,11 @@ export default function DashboardPage() {
               placeholder="Search projects..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="border border-[#E2E8F0] rounded-xl px-4 py-2.5 w-64 bg-white focus:border-teal-500 outline-none"
+              className="border border-[#E2E8F0] rounded-xl px-4 py-2.5 w-64 bg-white focus:border-brand outline-none"
             />
             <Link
               to="/projects/new"
-              className="bg-teal-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-teal-700 transition-colors ml-3"
+              className="bg-brand text-white px-5 py-2.5 rounded-xl font-medium hover:bg-brand-hover transition-colors ml-3"
             >
               + New Project
             </Link>
@@ -38,7 +38,7 @@ export default function DashboardPage() {
             <Link
               key={project.id}
               to={`/projects/${project.id}`}
-              className="bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-teal-200 transition-all duration-200 cursor-pointer"
+              className="bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-brand-border transition-all duration-200 cursor-pointer"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
