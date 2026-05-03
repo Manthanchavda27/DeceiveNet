@@ -109,41 +109,40 @@ export const auditLogs: AuditLogEntry[] = [
 ];
 
 export const sourceCodeFiles: Record<string, string> = {
-  'app.py': `import openai
-import os
+  'app.py': `import os
 from fastapi import FastAPI
-from dotenv import load_dotenv
+from deceivenet.core.honeypot import HoneypotManager
 
 # TODO: move to env vars before production deployment
-OPENAI_API_KEY = "sk-proj-FakeKeyForTestingPurposesOnly123456"
-DATABASE_URL = "postgresql://admin:Sup3rS3cretP@ss@db.internal:5432/vibeforge_prod"
+DATABASE_URL = "postgresql://admin:Sup3rS3cretP@ss@db.internal:5432/deceivenet_prod"
+HMAC_SIGNING_KEY = "dev-only-replace-in-vault"
 AWS_ACCESS_KEY_ID = "AKIAFAKEKEY123456"
 AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYFAKEKEY"
 
 app = FastAPI()
+manager = HoneypotManager(db_url=DATABASE_URL)
 
-@app.get("/api/agents")
-async def list_agents():
-    """List all deployed AI agents."""
-    return {"agents": [], "total": 0}
+@app.get("/api/honeypots")
+async def list_honeypots():
+    """List all registered decoy services."""
+    return await manager.list_decoys()
 
-@app.post("/api/agents/deploy")
-async def deploy_agent(config: dict):
-    """Deploy a new AI agent to the cluster."""
-    client = openai.OpenAI(api_key=OPENAI_API_KEY)
-    return {"status": "deployed", "id": "agent-001"}
+@app.post("/api/honeypots/{decoy_id}/session")
+async def record_session(decoy_id: str, event: dict):
+    """Ingest an attacker interaction for analysis and intel export."""
+    return await manager.record_event(decoy_id, event)
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "healthy", "version": "2.4.1"}`,
-  'config.yaml': `# VibeForge Configuration
+    return {"status": "healthy", "version": "2.4.1", "product": "DeceiveNet"}`,
+  'config.yaml': `# DeceiveNet Configuration
 server:
   host: "0.0.0.0"
   port: 8000
   workers: 4
 
 database:
-  url: "postgresql://admin:Sup3rS3cretP@ss@db.internal:5432/vibeforge_prod"
+  url: "postgresql://admin:Sup3rS3cretP@ss@db.internal:5432/deceivenet_prod"
   pool_size: 20
   max_overflow: 10
 
@@ -160,34 +159,33 @@ auth:
   secret_key: "super-secret-jwt-key-change-in-prod"
   algorithm: "HS256"
   access_token_expire_minutes: 30`,
-  'agent.py': `from openai import OpenAI
-import os
+  'honeypot_worker.py': `import os
+import asyncio
+from deceivenet.ingest.syslog import SyslogSink
+from deceivenet.dispatch.alerting import AlertRouter
 
-class AIAgent:
-    """Base class for all VibeForge AI agents."""
+class DecoyWorker:
+    """Runs a single DeceiveNet decoy process and streams events upstream."""
 
-    def __init__(self, name: str, model: str = "gpt-4"):
-        self.name = name
-        self.model = model
-        self.client = OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY", "sk-proj-FakeKeyForTestingPurposesOnly123456")
-        )
+    def __init__(self, decoy_id: str, bind: str = "0.0.0.0:2222"):
+        self.decoy_id = decoy_id
+        self.bind = bind
+        self.sink = SyslogSink(os.getenv("DECEIVENET_SYSLOG_URL", "udp://127.0.0.1:5514"))
+        self.router = AlertRouter()
 
-    async def run(self, prompt: str) -> str:
-        """Execute the agent with a given prompt."""
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        return response.choices[0].message.content
+    async def handle_connection(self, reader, writer):
+        """Capture banners, credentials, and commands for intel pipelines."""
+        session_id = await self.router.open_session(self.decoy_id)
+        # ... protocol-specific lure logic ...
+        await self.sink.emit(session_id, {"stage": "handshake"})
+        writer.close()
 
-    async def deploy(self):
-        """Deploy this agent to production."""
-        # TODO: implement deployment logic
-        pass`,
+    async def run(self):
+        """Start the decoy listener until cancelled."""
+        await asyncio.Future()  # placeholder — real impl binds sockets / TLS mocks
+`,
   'requirements.txt': `fastapi==0.104.1
 uvicorn==0.24.0
-openai==1.6.1
 python-dotenv==1.0.0
 sqlalchemy==2.0.23
 psycopg2-binary==2.9.9
@@ -208,8 +206,8 @@ export const chatMessages = [
 ];
 
 export const envVariables = [
-  { key: 'OPENAI_API_KEY', value: 'sk-proj-FakeKeyForTestingPurposesOnly123456', rotated: '2 days ago' },
-  { key: 'DATABASE_URL', value: 'postgresql://admin:Sup3rS3cretP@ss@db.internal:5432/vibeforge_prod', rotated: '1 week ago' },
+  { key: 'DECEIVENET_SIGNING_SECRET', value: 'dev-signing-secret-replace-in-vault', rotated: '2 days ago' },
+  { key: 'DATABASE_URL', value: 'postgresql://admin:Sup3rS3cretP@ss@db.internal:5432/deceivenet_prod', rotated: '1 week ago' },
   { key: 'AWS_ACCESS_KEY_ID', value: 'AKIAFAKEKEY123456', rotated: '3 days ago' },
   { key: 'AWS_SECRET_ACCESS_KEY', value: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYFAKEKEY', rotated: '3 days ago' },
   { key: 'STRIPE_SECRET_KEY', value: 'sk_live_FAKE_STRIPE_SECRET_KEY_12345', rotated: '1 month ago' },
@@ -218,10 +216,10 @@ export const envVariables = [
 ];
 
 export const deployments = [
-  { version: 'v2.4.1', message: 'Fixed rate limiting in customer agent', time: '2h ago', status: 'Success', hash: 'a1b2c3d' },
-  { version: 'v2.4.0', message: 'Added RAG pipeline', time: '1d ago', status: 'Success', hash: 'e4f5g6h' },
-  { version: 'v2.3.2', message: 'Security patch: rotated API keys', time: '3d ago', status: 'Success', hash: 'i7j8k9l' },
-  { version: 'v2.3.1', message: 'Hotfix: connection pool issue', time: '5d ago', status: 'Success', hash: 'm0n1o2p' },
-  { version: 'v2.3.0', message: 'Multi-agent orchestration', time: '1w ago', status: 'Success', hash: 'q3r4s5t' },
+  { version: 'v2.4.1', message: 'Hardened SSH decoy banner templates', time: '2h ago', status: 'Success', hash: 'a1b2c3d' },
+  { version: 'v2.4.0', message: 'Intel export: STIX 2.1 bundle support', time: '1d ago', status: 'Success', hash: 'e4f5g6h' },
+  { version: 'v2.3.2', message: 'Security patch: rotated signing keys', time: '3d ago', status: 'Success', hash: 'i7j8k9l' },
+  { version: 'v2.3.1', message: 'Hotfix: Redis session backlog under load', time: '5d ago', status: 'Success', hash: 'm0n1o2p' },
+  { version: 'v2.3.0', message: 'Multi-decoy orchestration & health checks', time: '1w ago', status: 'Success', hash: 'q3r4s5t' },
   { version: 'v2.2.4', message: 'Failed deploy — rollback', time: '2w ago', status: 'Failed', hash: 'u6v7w8x' },
 ];
