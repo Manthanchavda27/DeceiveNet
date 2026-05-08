@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import {
-  Server,
+  ArrowRight,
+  CheckCircle2,
   Eye,
-  Shield,
   Network,
-  Zap,
+  PlayCircle,
+  Server,
+  Shield,
   Target,
+  Zap,
 } from "lucide-react";
 
 const features = [
@@ -55,6 +58,29 @@ const trustMetrics = [
 ];
 
 const companyNames = ["Nvidia", "Spotify", "Microsoft", "Stripe", "Notion"];
+
+const workflowSteps = [
+  {
+    title: "Deploy",
+    description:
+      "Place SSH, HTTP, API, or database honeypots where real attackers would look.",
+  },
+  {
+    title: "Capture",
+    description:
+      "Record commands, credentials, payloads, source IPs, and session context.",
+  },
+  {
+    title: "Analyze",
+    description:
+      "Map behavior to severity, TTPs, and threat intelligence indicators.",
+  },
+  {
+    title: "Respond",
+    description:
+      "Push alerts to analysts, webhooks, SIEM tools, and audit trails.",
+  },
+];
 
 const testimonials = [
   {
@@ -113,14 +139,17 @@ export default function LandingPage() {
           >
             <Link
               to="/dashboard"
-              className="bg-brand hover:bg-brand-hover text-white px-8 py-4 rounded-xl font-medium shadow-md hover:shadow-lg transition-all"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand px-8 py-4 font-semibold text-white shadow-md transition-all hover:bg-brand-hover hover:shadow-lg sm:w-auto"
             >
+              <PlayCircle size={20} />
               Start free
+              <ArrowRight size={18} />
             </Link>
             <a
               href="#features"
-              className="border border-[#E2E8F0] hover:border-accent text-[#0F172A] px-8 py-4 rounded-xl font-medium transition-all"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[#E2E8F0] px-8 py-4 font-semibold text-[#0F172A] transition-all hover:border-accent hover:bg-[#F8FAFC] sm:w-auto"
             >
+              <CheckCircle2 size={20} />
               See features
             </a>
           </div>
@@ -167,8 +196,8 @@ export default function LandingPage() {
             Everything you need for deception ops
           </h2>
           <p className="text-center text-[#475569] max-w-2xl mx-auto mb-16">
-            From deployment to intelligence — one platform for DeceiveNet Honeypot
-            workloads across cloud and on-prem.
+            From deployment to intelligence - one platform for DeceiveNet
+            Honeypot workloads across cloud and on-prem.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature) => {
@@ -176,7 +205,7 @@ export default function LandingPage() {
               return (
                 <div
                   key={feature.title}
-                  className="bg-white border border-[#E2E8F0] rounded-2xl p-8 shadow-sm hover:shadow-md hover:border-brand-border transition-all"
+                  className="bg-white border border-[#E2E8F0] rounded-lg p-8 shadow-sm hover:shadow-md hover:border-brand-border transition-all"
                 >
                   <div className="text-brand mb-4">
                     <Icon size={28} />
@@ -193,7 +222,42 @@ export default function LandingPage() {
       </section>
 
       <section
+        className="animate-fadeIn py-24 bg-[#0F172A]"
+        id="workflow"
+        style={{ animationDelay: "100ms" }}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center text-white mb-4">
+            Built for the defender workflow
+          </h2>
+          <p className="text-center text-[#CBD5E1] max-w-2xl mx-auto mb-16">
+            Deploy decoys, watch attackers interact with them, score the event,
+            and route the evidence to the team that can act.
+          </p>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+            {workflowSteps.map((step, index) => (
+              <div
+                key={step.title}
+                className="rounded-lg border border-white/10 bg-white/5 p-6"
+              >
+                <span className="text-sm font-semibold text-accent">
+                  Step {index + 1}
+                </span>
+                <h3 className="mt-3 text-xl font-semibold text-white">
+                  {step.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-[#CBD5E1]">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
         className="animate-fadeIn py-24 bg-gradient-to-b from-white to-brand-soft"
+        id="proof"
         style={{ animationDelay: "100ms" }}
       >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -204,7 +268,7 @@ export default function LandingPage() {
             {testimonials.map((t) => (
               <div
                 key={t.author}
-                className="bg-white border border-[#E2E8F0] rounded-2xl p-8 shadow-sm"
+                className="bg-white border border-[#E2E8F0] rounded-lg p-8 shadow-sm"
               >
                 <p className="text-[#0F172A] mb-6 leading-relaxed">
                   &ldquo;{t.quote}&rdquo;
@@ -233,9 +297,11 @@ export default function LandingPage() {
           </p>
           <Link
             to="/dashboard"
-            className="inline-block bg-brand hover:bg-brand-hover text-white px-8 py-4 rounded-xl font-medium transition-colors"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-8 py-4 font-semibold text-white transition-colors hover:bg-brand-hover"
           >
+            <Server size={20} />
             Deploy your first honeypot
+            <ArrowRight size={18} />
           </Link>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-[#94A3B8]">
             <span>10-minute setup</span>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Chrome, Github, KeyRound } from "lucide-react";
+import { ArrowRight, Chrome, Eye, EyeOff, Github, KeyRound } from "lucide-react";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -92,9 +92,10 @@ export default function LoginPage() {
 
           <button
             onClick={handleSignIn}
-            className="mt-6 w-full rounded-xl bg-brand py-3 font-medium text-white transition-colors hover:bg-brand-hover"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-brand py-3 font-semibold text-white transition-colors hover:bg-brand-hover"
           >
             Sign In
+            <ArrowRight size={18} />
           </button>
 
           <div className="mt-6 flex items-center gap-3">
@@ -104,15 +105,15 @@ export default function LoginPage() {
           </div>
 
           <div className="mt-6 flex gap-3">
-            <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[#E2E8F0] px-4 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:bg-[#F8FAFC]">
+            <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-[#E2E8F0] px-4 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:bg-[#F8FAFC]">
               <Chrome size={18} />
               Google
             </button>
-            <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[#E2E8F0] px-4 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:bg-[#F8FAFC]">
+            <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-[#E2E8F0] px-4 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:bg-[#F8FAFC]">
               <Github size={18} />
               GitHub
             </button>
-            <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[#E2E8F0] px-4 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:bg-[#F8FAFC]">
+            <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-[#E2E8F0] px-4 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:bg-[#F8FAFC]">
               <KeyRound size={18} />
               SSO
             </button>
@@ -131,7 +132,7 @@ export default function LoginPage() {
         <div className="text-center px-8">
           <p className="text-lg text-white/95 font-medium">DeceiveNet Honeypot</p>
           <p className="mt-2 text-white/85 text-sm max-w-sm mx-auto">
-            Enterprise deception & threat intelligence — decoys that watch your
+            Enterprise deception & threat intelligence - decoys that watch your
             perimeter while you sleep.
           </p>
           <div className="mt-6 flex items-center justify-center gap-6">
