@@ -1,42 +1,73 @@
-# DeceiveNet
+# DeceiveNet: Honeypot Intelligence & Telemetry Platform
 
-**Tagline:** Catch Every Intruder  
-**Subtitle:** Enterprise Deception & Threat Intelligence Platform
+DeceiveNet is a modern, professional cybersecurity MVP designed to provide real-time honeypot intelligence. It allows users to deploy managed honeypots (HTTP, SSH, Redis) or integrate a standalone SDK into their own applications to capture and analyze malicious activity.
 
-DeceiveNet is a self-hosted honeypot platform that deploys decoy services, captures attacker TTPs, and turns intrusion data into threat intelligence. This repository contains the **Vite + React + TypeScript** web frontend: public marketing pages, authentication UI, and the admin console for managing honeypots, decoys, events, and integrations.
+![Dashboard Preview](https://raw.githubusercontent.com/Manthanchavda27/DeceiveNet/main/preview.png)
 
-## Tech stack
+## 🚀 Key Features
 
-- [Vite](https://vitejs.dev/) — build tool and dev server
-- [React 18](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- [Tailwind CSS](https://tailwindcss.com/) — styling
-- [React Router](https://reactrouter.com/) — routing
-- [Lucide React](https://lucide.dev/) — icons
+- **Multi-Tenant Dashboard**: Secure, isolated project management for multiple users.
+- **Managed Honeypots**: One-click deployment of HTTP, SSH, and Redis honeypots.
+- **DeceiveNet SDK**: Standalone Node.js middleware for deep telemetry ingestion in existing Express apps.
+- **Real-Time Feed**: Live attack monitoring via WebSockets.
+- **Threat Detection**: Integrated SQLi, XSS, Path Traversal, and Scanner detection.
+- **Privacy Controls**: Recursive object redaction for PII protection before egress.
 
-## Brand colors
+## 🛠 Architecture
 
-| Role    | Hex       |
-|--------|-----------|
-| Primary | `#ff6b35` |
-| Dark    | `#0d0d0d` |
-| Accent  | `#00d4ff` |
-| Text    | `#ffffff` (on dark surfaces) |
+- **Frontend**: React (Vite), Tailwind CSS, Lucide Icons.
+- **Backend**: Node.js, Express, Prisma (PostgreSQL/SQLite), WebSockets.
+- **SDK**: Standalone TypeScript package with HMAC-signed ingestion.
+- **Database**: PostgreSQL (Production) / SQLite (Development).
 
-## Scripts
+## 📂 Repository Structure
 
-| Command        | Description              |
-|----------------|--------------------------|
-| `npm install`  | Install dependencies     |
-| `npm run dev`  | Start dev server         |
-| `npm run build`| Production build         |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Run ESLint               |
-| `npm run typecheck` | TypeScript check     |
+```text
+DeceiveNet/
+├── frontend/           # React dashboard application
+├── backend/            # Express API and Honeypot Runtime
+├── sdk/                # standalone deceivenet-sdk package
+├── fake-login-test/    # Sample application demonstrating SDK integration
+└── README.md
+```
 
-## Repository
+## 🏁 Getting Started
 
-- **Remote:** [https://github.com/Manthanchavda27/DeceiveNet.git](https://github.com/Manthanchavda27/DeceiveNet.git)
+### 1. Backend Setup
+```bash
+cd backend
+npm install
+cp .env.example .env
+npx prisma generate
+npx prisma migrate dev
+npm start
+```
 
-## License
+### 2. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-Private / as specified by the project owner.
+### 3. SDK Integration Example
+See the `fake-login-test` directory for a complete example.
+
+```javascript
+const { DeceiveNet } = require('deceivenet-sdk');
+
+app.use(DeceiveNet({
+  projectId: "YOUR_PROJECT_ID",
+  token: "YOUR_API_KEY",
+  endpoint: "http://localhost:3000/api/sdk/events",
+  interceptRoutes: ['/login', '/admin'],
+  debug: true
+}));
+```
+
+## 🔒 Security & Isolation
+
+DeceiveNet implements strict multi-user isolation. Users can only see, manage, and receive telemetry for projects they own. WebSocket events are filtered server-side to ensure zero data leakage between tenants.
+
+## 📄 License
+MIT License. See `LICENSE` for details.
