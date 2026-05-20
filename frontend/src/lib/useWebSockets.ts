@@ -5,10 +5,18 @@ export function useWebSockets() {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('deceivenet_access');
+    const token = localStorage.getItem('token') || localStorage.getItem('deceivenet_access');
     if (!token) return;
 
-    const ws = new WebSocket(`ws://localhost:3000/api/ws?token=${token}`);
+    let wsUrl = import.meta.env.VITE_WS_URL;
+    if (!wsUrl) {
+      const apiOrigin = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const url = new URL(apiOrigin);
+      const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+      wsUrl = `${protocol}//${url.host}/api/ws`;
+    }
+    const wsPath = wsUrl.endsWith('/api/ws') ? wsUrl : `${wsUrl}/api/ws`;
+    const ws = new WebSocket(`${wsPath}?token=${token}`);
 
     ws.onopen = () => {
       setConnected(true);

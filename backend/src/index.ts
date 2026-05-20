@@ -12,7 +12,9 @@ import { sdkRouter } from './routes/sdk.js';
 import { getRedis } from './lib/redis.js';
 
 const PORT = Number(process.env.PORT ?? 3000);
-const CORS_ORIGIN = process.env.CORS_ORIGIN ?? 'http://localhost:5173';
+const CORS_ORIGIN = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(s => s.trim())
+  : ['http://localhost:5173'];
 
 type WsClient = { socket: WebSocket, userId: string };
 

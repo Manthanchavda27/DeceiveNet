@@ -46,8 +46,15 @@ export default function ProjectDetailPage() {
     const token = localStorage.getItem('token');
     if (!token) return;
 
-    const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:3000';
-    const ws = new WebSocket(`${wsUrl}/api/ws?token=${token}`);
+    let wsUrl = import.meta.env.VITE_WS_URL;
+    if (!wsUrl) {
+      const apiOrigin = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const url = new URL(apiOrigin);
+      const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+      wsUrl = `${protocol}//${url.host}/api/ws`;
+    }
+    const wsPath = wsUrl.endsWith('/api/ws') ? wsUrl : `${wsUrl}/api/ws`;
+    const ws = new WebSocket(`${wsPath}?token=${token}`);
     
     ws.onmessage = (event) => {
       try {
@@ -243,7 +250,7 @@ const app = express();
 app.use(DeceiveNet({
   projectId: '${project.id}',
   token: '${project.apiKey || 'YOUR_API_KEY'}',
-  endpoint: 'http://localhost:3000/api/sdk/events',
+  endpoint: '${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/sdk/events',
   interceptRoutes: ['/login', '/admin', '/wp-admin']
 }));`}
               </pre>
