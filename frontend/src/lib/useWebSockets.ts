@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { getWebSocketUrl } from './config';
 
 export function useWebSockets() {
   const [lastEvent, setLastEvent] = useState<any>(null);
@@ -8,15 +9,7 @@ export function useWebSockets() {
     const token = localStorage.getItem('token') || localStorage.getItem('deceivenet_access');
     if (!token) return;
 
-    let wsUrl = import.meta.env.VITE_WS_URL;
-    if (!wsUrl) {
-      const apiOrigin = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-      const url = new URL(apiOrigin);
-      const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
-      wsUrl = `${protocol}//${url.host}/api/ws`;
-    }
-    const wsPath = wsUrl.endsWith('/api/ws') ? wsUrl : `${wsUrl}/api/ws`;
-    const ws = new WebSocket(`${wsPath}?token=${token}`);
+    const ws = new WebSocket(`${getWebSocketUrl()}?token=${token}`);
 
     ws.onopen = () => {
       setConnected(true);

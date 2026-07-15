@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Loader2, Activity, Radar } from 'lucide-react';
 import { fetchHoneypotById, createHoneypot, updateHoneypot, deleteHoneypot, startHoneypot, stopHoneypot, fetchEvents } from '../../lib/api';
+import { API_ORIGIN, getWebSocketUrl } from '../../lib/config';
 
 type Tab = 'source' | 'telemetry' | 'settings';
 
@@ -46,15 +47,7 @@ export default function ProjectDetailPage() {
     const token = localStorage.getItem('token');
     if (!token) return;
 
-    let wsUrl = import.meta.env.VITE_WS_URL;
-    if (!wsUrl) {
-      const apiOrigin = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-      const url = new URL(apiOrigin);
-      const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
-      wsUrl = `${protocol}//${url.host}/api/ws`;
-    }
-    const wsPath = wsUrl.endsWith('/api/ws') ? wsUrl : `${wsUrl}/api/ws`;
-    const ws = new WebSocket(`${wsPath}?token=${token}`);
+    const ws = new WebSocket(`${getWebSocketUrl()}?token=${token}`);
     
     ws.onmessage = (event) => {
       try {
@@ -250,7 +243,7 @@ const app = express();
 app.use(DeceiveNet({
   projectId: '${project.id}',
   token: '${project.apiKey || 'YOUR_API_KEY'}',
-  endpoint: '${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/sdk/events',
+  endpoint: '${API_ORIGIN}/api/sdk/events',
   interceptRoutes: ['/login', '/admin', '/wp-admin']
 }));`}
               </pre>

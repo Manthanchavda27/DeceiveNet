@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:3000/api',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -41,7 +42,7 @@ export async function fetchHoneypotById(id: string) {
   return res.data.data;
 }
 
-export async function createHoneypot(data: { name: string; type: string; port: number }) {
+export async function createHoneypot(data: { name: string; type: string; port: number | null }) {
   const res = await api.post(`/honeypots`, data);
   return res.data.data;
 }

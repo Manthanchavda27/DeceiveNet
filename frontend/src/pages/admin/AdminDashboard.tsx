@@ -1,17 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Server, Swords, Fingerprint, BellRing, TrendingUp, Zap } from 'lucide-react';
+import { Server, Swords, Fingerprint, BellRing, Zap } from 'lucide-react';
 import { fetchOverview, fetchHoneypots, fetchEvents, triggerDemoAttack } from '../../lib/api';
 import { useWebSockets } from '../../lib/useWebSockets';
-
-const countryFlags: Record<string, string> = {
-  RU: '\u{1F1F7}\u{1F1FA}',
-  DE: '\u{1F1E9}\u{1F1EA}',
-  CN: '\u{1F1E8}\u{1F1F3}',
-  UA: '\u{1F1FA}\u{1F1E6}',
-  US: '\u{1F1FA}\u{1F1F8}',
-  IN: '\u{1F1EE}\u{1F1F3}',
-};
 
 const severityBadgeClass: Record<string, string> = {
   critical: 'severity-critical',

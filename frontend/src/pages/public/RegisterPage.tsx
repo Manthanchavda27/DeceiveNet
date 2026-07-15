@@ -13,13 +13,6 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
-  // Password length check (6-8 chars)
-  const checks = {
-    length: password.length >= 6 && password.length <= 8,
-    minLength: password.length >= 6,
-  };
-  const strength = password.length === 0 ? 0 : password.length < 6 ? 1 : password.length <= 8 ? 5 : 3;
-
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');

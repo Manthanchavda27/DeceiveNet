@@ -8,8 +8,7 @@ import {
 } from 'react';
 import { Loader2 } from 'lucide-react';
 import api from './api';
-
-const API = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+import { API_BASE_URL, getAuthErrorMessage } from './config';
 
 export interface AuthUser {
   id: string;
@@ -73,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // If no token or token ping failed, try silent refresh
       if (refresh) {
         try {
-          const res = await fetch(`${API}/api/auth/refresh`, {
+          const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ refreshToken: refresh }),
@@ -102,35 +101,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     setState((s) => ({ ...s, loading: true }));
-    const res = await fetch(`${API}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    const json = await res.json();
-    if (!res.ok) {
+    try {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setState((s) => ({ ...s, loading: false }));
+        throw new Error(json?.error?.message ?? 'Login failed');
+      }
+      const { token, refreshToken, user } = json.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('dn_refresh', refreshToken);
+      localStorage.setItem('dn_user', JSON.stringify(user));
+      setState({ user, accessToken: token, loading: false, verifying: false });
+    } catch (error) {
       setState((s) => ({ ...s, loading: false }));
-      throw new Error(json?.error?.message ?? 'Login failed');
+      throw new Error(getAuthErrorMessage(error, 'Login failed'));
     }
-    const { token, refreshToken, user } = json.data;
-    localStorage.setItem('token', token);
-    localStorage.setItem('dn_refresh', refreshToken);
-    localStorage.setItem('dn_user', JSON.stringify(user));
-    setState({ user, accessToken: token, loading: false, verifying: false });
   }, []);
 
   const register = useCallback(
     async (username: string, email: string, password: string) => {
       setState((s) => ({ ...s, loading: true }));
-      const res = await fetch(`${API}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
-      const json = await res.json();
-      if (!res.ok) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password }),
+        });
+        const json = await res.json();
+        if (!res.ok) {
+          setState((s) => ({ ...s, loading: false }));
+          throw new Error(json?.error?.message ?? 'Registration failed');
+        }
+      } catch (error) {
         setState((s) => ({ ...s, loading: false }));
-        throw new Error(json?.error?.message ?? 'Registration failed');
+        throw new Error(getAuthErrorMessage(error, 'Registration failed'));
       }
       // Auto-login after register
       setState((s) => ({ ...s, loading: false }));
@@ -142,7 +151,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = useCallback(async () => {
     const refresh = localStorage.getItem('dn_refresh');
     if (refresh) {
-      fetch(`${API}/api/auth/logout`, {
+      fetch(`${API_BASE_URL}/auth/logout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refreshToken: refresh }),

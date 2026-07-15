@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchHoneypots } from '../../lib/api';
-import { Server, Zap } from 'lucide-react';
+import { Server } from 'lucide-react';
 
 export default function DashboardPage() {
   const [search, setSearch] = useState('');
