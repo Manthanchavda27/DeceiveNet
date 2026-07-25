@@ -35,11 +35,10 @@ router.post('/events', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Project not found' });
     }
 
-    // Verify HMAC Signature using deterministic stringification
-    const payloadStr = JSON.stringify(req.body, Object.keys(req.body).sort());
+    // Verify HMAC — must match SDK's JSON.stringify(payload) without key sorting
+    const payloadStr = JSON.stringify({ projectId, events });
     const hmac = crypto.createHmac('sha256', hp.apiKey);
-    const stringToSign = `${timestampStr}.${payloadStr}`;
-    hmac.update(stringToSign);
+    hmac.update(`${timestampStr}.${payloadStr}`);
     const expectedSignature = hmac.digest('hex');
 
     if (signature !== expectedSignature) {
